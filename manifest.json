@@ -1,23 +1,24 @@
 {
- "name": "מתכנן הטיולים של ישי ונעמה",
- "short_name": "מתכנן טיול",
- "start_url": "./Trip-planner-pro-v7.1.html",
- "scope": "./",
- "display": "standalone",
- "background_color": "#0f3d56",
- "theme_color": "#0f3d56",
- "lang": "he",
- "dir": "rtl",
- "icons": [
-  {
-   "src": "icon-192.png",
-   "sizes": "192x192",
-   "type": "image/png"
-  },
-  {
-   "src": "icon-512.png",
-   "sizes": "512x512",
-   "type": "image/png"
-  }
- ]
+  "name": "מתכנן הטיולים של ישי ונעמה",
+  "short_name": "מתכנן טיול",
+  "id": "./",
+  "start_url": "./Trip-planner-pro-v8.2.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f3d56",
+  "theme_color": "#0f3d56",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
