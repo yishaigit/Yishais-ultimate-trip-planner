@@ -2,7 +2,7 @@
   "name": "מתכנן הטיולים של ישי ונעמה",
   "short_name": "מתכנן טיול",
   "id": "./",
-  "start_url": "./Trip-planner-pro-v8.2.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0f3d56",

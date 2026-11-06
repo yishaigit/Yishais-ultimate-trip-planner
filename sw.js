@@ -1,5 +1,7 @@
-const C='trip-planner-v8-2';
+const C='trip-planner-v8-2-launch-fix-1';
 const CORE=['./index.html','./Trip-planner-pro-v8.2.html','./manifest.json'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('trip-planner-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==self.location.origin||!u.pathname.startsWith(new URL(self.registration.scope).pathname))return;e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();e.waitUntil(caches.open(C).then(c=>c.put(e.request,copy)))}return r}).catch(async()=>{const m=await caches.match(e.request);if(m)return m;if(e.request.mode==='navigate')return caches.match('./Trip-planner-pro-v8.2.html');return Response.error()}))});
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url),root=new URL(self.registration.scope);if(e.request.method!=='GET'||u.origin!==root.origin||!u.pathname.startsWith(root.pathname))return;
+if(e.request.mode==='navigate'&&u.pathname===new URL('./Trip-planner-pro-v7.1.html',root).pathname){e.respondWith(Promise.resolve(Response.redirect(new URL('./',root).href,302)));return;}
+e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();e.waitUntil(caches.open(C).then(c=>c.put(e.request,copy)))}return r}).catch(async()=>{const m=await caches.match(e.request);if(m)return m;if(e.request.mode==='navigate')return caches.match('./Trip-planner-pro-v8.2.html');return Response.error()}))});
