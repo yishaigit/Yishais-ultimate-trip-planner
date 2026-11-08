@@ -92,7 +92,7 @@ a.nav-link{display:inline-flex;align-items:center;justify-content:center;min-wid
 </style>
 </head>
 <body>
-<div class="container"><header style="position:relative"><div id="appVersionBadge" style="position:absolute;top:10px;left:14px;background:#ffffffcc;color:#333;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #d7d7d7;z-index:5">גרסה v9.1.1</div><div><h1>מתכנן הטיולים האולטימטיבי של ישי ונעמה</h1><p id="headerSubtitle">תכננו יחד את הטיול המושלם</p></div></header>
+<div class="container"><header style="position:relative"><div id="appVersionBadge" style="position:absolute;top:10px;left:14px;background:#ffffffcc;color:#333;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #d7d7d7;z-index:5">גרסה v9.1.5</div><div><h1>מתכנן הטיולים האולטימטיבי של ישי ונעמה</h1><p id="headerSubtitle">תכננו יחד את הטיול המושלם</p></div></header>
 <div class="setup-section" id="setupSection"><h2>🎯 הגדרות טיול חדש</h2><div class="setup-grid"><div class="setup-form"><h3>📍 פרטי הטיול</h3><div class="form-group"><label for="tripName">שם הטיול:</label><input id="tripName" placeholder="למשל: טיול לארגנטינה"></div><div class="form-group"><label for="countryInput">מדינות יעד:</label><div class="countries-list" id="countriesList"></div><div class="country-search-wrap"><div class="country-input-row"><input id="countryInput" autocomplete="off" placeholder="חפש מדינה..." oninput="renderCountrySuggestions()" onkeypress="if(event.key==='Enter'){event.preventDefault();addCountry()}"><button class="btn-add-country" onclick="addCountry()">🔎 בחר</button></div><div id="countrySuggestions" class="country-suggestions"></div></div><div class="location-status">הבחירה מתבצעת ממאגר מדינות מקומי ומשמשת למיקוד המפה.</div></div></div><div class="setup-form"><h3>📅 תאריכי הטיול</h3><div class="form-row"><div class="form-group"><label for="tripStartDate">תאריך התחלה:</label><input type="date" id="tripStartDate"></div><div class="form-group"><label for="tripEndDate">תאריך סיום:</label><input type="date" id="tripEndDate"></div></div><button class="btn-setup" onclick="startTrip()">🚀 התחל לתכנן</button></div><div class="setup-form import-start"><h3>📥 ייבוא תכנון קיים</h3><p style="color:#6b7280;margin-bottom:12px">ייבוא ZIP מלא כולל קבצים. JSON מייבא רק את נתוני התכנון ללא קבצים.</p><div class="form-group"><label for="startDossierImport">ייבוא תיק נסיעה:</label><input type="file" id="startDossierImport" accept=".zip,application/zip"><button class="btn btn-success" style="margin-top:9px" onclick="importTravelDossierFromInput('startDossierImport')">ייבא תיק נסיעה</button></div><div class="form-group"><label for="startZipImport">ייבוא ZIP מלא:</label><input type="file" id="startZipImport" accept=".zip,application/zip"><button class="btn btn-zip" style="margin-top:9px" onclick="importZipFromInput('startZipImport')">ייבא ZIP מלא</button></div><div class="form-group"><label for="startImportData">ייבוא JSON ללא קבצים:</label><textarea id="startImportData" rows="4" placeholder="הדביקו כאן את תוכן קובץ ה-JSON..."></textarea><button class="btn btn-info" style="margin-top:9px" onclick="importJsonAtStart()">טען JSON</button></div></div></div></div>
 <div class="main-content" id="mainContent"><div class="calendar-section"><div class="trip-info"><h3 id="tripInfoName">שם הטיול</h3><p id="tripInfoCountries"></p><p id="tripInfoDates"></p><p id="tripInfoDays"></p><button class="new-trip-btn" onclick="showSetup()">🔄 טיול חדש</button></div><div class="global-search-panel"><label for="globalSearch">🔎 חיפוש בכל התכנון:</label><input id="globalSearch" placeholder="חפש יעד, טיסה, מלון, פעילות, משימה, הוצאה או קובץ..." oninput="renderGlobalSearch()"><div id="globalSearchResults" class="global-search-results"></div></div>
 <div class="stats"><div class="stat-card"><div class="stat-number" id="totalDays">0</div><div class="stat-label">ימי טיול</div></div><div class="stat-card"><div class="stat-number" id="destinationsCount">0</div><div class="stat-label">יעדים</div></div><div class="stat-card"><div class="stat-number" id="plannedDays">0</div><div class="stat-label">ימים מתוכננים</div></div><div class="stat-card"><div class="stat-number" id="flightsCount">0</div><div class="stat-label">טיסות</div></div><div class="stat-card"><div class="stat-number" id="hotelsCount">0</div><div class="stat-label">מלונות</div></div><div class="stat-card"><div class="stat-number" id="filesCount">0</div><div class="stat-label">קבצים</div></div></div>
@@ -100,7 +100,7 @@ a.nav-link{display:inline-flex;align-items:center;justify-content:center;min-wid
 <div id="alternateView" class="alternate-view" style="display:none"></div>
 <div class="calendar-view-content" id="calendarViewContent">
 <div class="calendar-header"><h2>📅 לוח שנה</h2><div class="calendar-nav"><button onclick="previousMonth()">◀ הקודם</button><span id="currentMonthDisplay"></span><button onclick="nextMonth()">הבא ▶</button></div></div><div class="calendar-grid" id="calendarGrid"></div></div>
-<section class="day-info-panel"><h2>ℹ️ מידע נוסף</h2><div id="dayInfoContent" class="empty-main-info">לא קיים מידע נוסף</div></section>
+<section class="day-info-panel" hidden><h2>ℹ️ מידע נוסף</h2><div id="dayInfoContent" class="empty-main-info">לא קיים מידע נוסף</div></section>
 <section class="planning-tabs" id="planningTabs">
   <div class="tab-buttons"><button class="tab-button active" data-tab="budget" onclick="showPlanningTab('budget')">💰 תקציב</button><button class="tab-button" data-tab="tasks" onclick="showPlanningTab('tasks')">✅ משימות</button><button class="tab-button" data-tab="packing" onclick="showPlanningTab('packing')">🎒 רשימת אריזה</button><button class="tab-button" data-tab="documents" onclick="showPlanningTab('documents')">📄 מסמכים</button><button class="tab-button" data-tab="notes" onclick="showPlanningTab('notes')">📝 פתקים</button></div>
   <div class="tab-content" id="budgetTab">
@@ -1183,6 +1183,10 @@ return '<a class="small-btn edit-btn '+cls+'" target="_blank" rel="noopener nore
 function items(){var o=[];H().forEach(function(h,i){o.push({obj:h,name:h.name||('מלון '+(i+1)),group:'🏨 מלונות'})});D().forEach(function(d){(d.subDestinations||[]).forEach(function(s){o.push({obj:s,name:s.name||'אטרקציה',group:'🎡 אטרקציות — '+(d.name||'')})})});return o}
 window.renderNavList=function(){var its=items(),box=document.getElementById('navList');if(!box)return;if(!its.length){box.innerHTML='<p class="files-summary">אין עדיין מלונות או אטרקציות.</p>';return}
 var last='',h='';its.forEach(function(it,i){if(it.group!==last){h+='<h3 style="margin:12px 0 6px">'+E(it.group)+'</h3>';last=it.group}var c=coords(it.obj);
+if(window.matchMedia('(max-width: 760px)').matches){
+var parent=D().find(function(d){return String(d.id)===String(it.obj.destinationId)||(d.subDestinations||[]).some(function(sub){return sub===it.obj})});
+var parentName=(parent&&parent.name)||it.obj.destinationName||'';
+h+='<div class="attachment v912-nav-card"><b class="v912-nav-name">'+E(it.name)+'</b><small class="v912-nav-parent">'+E(parentName?'שייך ליעד: '+parentName:'ללא שיוך ליעד')+'</small><label class="v912-nav-address"><span>כתובת / קואורדינטות</span><input aria-label="כתובת או קואורדינטות עבור '+E(it.name)+'" value="'+E(it.obj.navLocation||'')+'" placeholder="'+E(c||'טרם הוגדר מיקום')+'" onchange="navSetLocation('+i+',this.value)"></label><div class="v912-nav-actions">'+(links(it.obj,'')||'<span class="files-summary">אין מיקום לניווט</span>')+'</div></div>';return;}
 h+='<div class="attachment" style="flex-wrap:wrap;gap:6px"><div style="flex:1 1 100%"><b>'+E(it.name)+'</b></div><input style="flex:1 1 220px" value="'+E(it.obj.navLocation||'')+'" placeholder="'+(c?'קואורדינטות קיימות: '+E(c):'כתובת, קישור או lat,lng')+'" onchange="navSetLocation('+i+',this.value)">'+(links(it.obj,'')||'<span class="files-summary">אין מיקום</span>')+'</div>'});box.innerHTML=h};
 window.navSetLocation=function(i,v){var it=items()[i];if(!it)return;v=String(v||'').trim();if(v)it.obj.navLocation=v;else delete it.obj.navLocation;try{savePlan()}catch(e){}window.renderNavList();decorate()};
 window.openNavModal=function(){window.renderNavList();document.getElementById('navModal').style.display='flex'};
@@ -1706,5 +1710,105 @@ let oldView=window.showView;window.showView=function(){if(userTurn)switchPanel('
 $('globalSearchResults').addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;let label=b.querySelector('small')?.textContent||'';switchPanel(/משימה|הוצאה|פתק|מסמך/.test(label)?'tools':'route',false)},true);
 let oldStart=window.startTrip;window.startTrip=function(){let r=oldStart.apply(this,arguments);switchPanel('route',false);return r};
 switchPanel('route',false);
+})();</script><style id="v912-mobile-info-navigation">
+@media(max-width:760px){
+#dayInfoContent .info-line{min-width:0;max-width:100%;box-sizing:border-box}
+#dayInfoContent .info-line-header{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:8px;min-width:0;max-width:100%}
+#dayInfoContent .info-line-header>strong{display:block;width:100%;min-width:0;max-width:100%;word-break:normal;overflow-wrap:anywhere}
+#dayInfoContent .info-line-header>.info-btns{display:flex!important;flex:0 1 auto!important;flex-shrink:1!important;width:100%;min-width:0;max-width:100%;flex-wrap:wrap!important;align-items:center;gap:6px}
+#dayInfoContent .info-line-header>button{align-self:flex-start}
+#dayInfoContent .info-btns>.nav-inline{display:contents!important}
+#dayInfoContent .info-btns>*,#dayInfoContent .info-btns .nav-inline>*{flex:0 1 auto;min-width:0;max-width:100%;box-sizing:border-box;white-space:normal!important;overflow-wrap:anywhere;min-height:36px}
+#dayInfoContent .info-line>span{overflow-wrap:anywhere}
+#navModal .modal-content{min-width:0;max-width:100%;box-sizing:border-box}
+#navList .v912-nav-card{display:flex!important;flex-direction:column;align-items:stretch;gap:5px;padding:10px;min-width:0;max-width:100%;box-sizing:border-box}
+#navList .v912-nav-name{font-size:.95rem;line-height:1.4;overflow-wrap:anywhere}
+#navList .v912-nav-parent{display:block;color:#64748b;font-size:.78rem;line-height:1.4;overflow-wrap:anywhere}
+#navList .v912-nav-address{display:block;min-width:0;width:100%;font-size:.72rem;color:#64748b}
+#navList .v912-nav-address>span{display:block;margin-bottom:3px}
+#navList .v912-nav-address input{display:block!important;flex:none!important;box-sizing:border-box;width:100%!important;min-width:0!important;max-width:100%;height:34px!important;min-height:34px!important;max-height:34px!important;padding:5px 8px;font-size:.8rem;line-height:1.3;direction:ltr;text-align:right;unicode-bidi:plaintext}
+#navList .v912-nav-actions{display:flex!important;flex-flow:row wrap;align-items:center;gap:6px;min-width:0;max-width:100%;margin-top:3px}
+#navList .v912-nav-actions>a,#navList .v912-nav-actions>button{display:inline-flex!important;align-items:center;justify-content:center;flex:0 1 auto!important;min-width:0;max-width:100%;min-height:36px;padding:7px 9px;white-space:normal;overflow-wrap:anywhere;font-size:.8rem;box-sizing:border-box}
+}
+</style><script id="v912-nav-breakpoint">(function(){var mq=window.matchMedia('(max-width: 760px)');function update(){var box=document.getElementById('navModal');if(box&&box.style.display==='flex'&&typeof window.renderNavList==='function')window.renderNavList()}if(mq.addEventListener)mq.addEventListener('change',update);else if(mq.addListener)mq.addListener(update)})();</script><style id="v913-route-list-tabs">
+#v913RouteTabs,#v913RouteLists{display:none}
+@media screen and (max-width:760px){
+#v913RouteTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;position:sticky;top:8px;z-index:35;padding:8px;margin:0 0 12px;border:1px solid #d1d5db;border-radius:12px;background:rgba(249,250,251,.98);box-shadow:0 3px 12px #11182710;min-width:0}
+#v913RouteTabs>button{min-width:0;min-height:40px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#374151;padding:7px 5px;font:inherit;font-size:.83rem;line-height:1.35;font-weight:650;white-space:normal;overflow-wrap:anywhere;cursor:pointer}
+#v913RouteTabs>button:first-child{grid-column:1/-1}
+#v913RouteTabs>button[aria-selected="true"]{background:#374151;color:#fff;border-color:#374151}
+#v913RouteTabs>button:focus-visible{outline:3px solid #d69e2e;outline-offset:2px}
+#v913RouteLists{display:block;min-width:0}
+#v913RouteLists[hidden],#v90Panel-route>.v90-route[hidden],#v913RouteLists>.list-box[hidden]{display:none!important}
+#v913RouteLists>.list-box{margin-top:0;min-width:0;max-width:100%;scroll-margin-top:160px}
+}
+@media print{#v913RouteTabs{display:none!important}#v913RouteLists{display:block!important}#v913RouteLists>.list-box,#v90Panel-route>.v90-route{display:block!important}}
+</style><script id="v913-route-list-tabs-js">(function(){
+const root=document.getElementById('v90Panel-route');if(!root)return;
+const grid=root.querySelector('.v90-route'),mq=window.matchMedia('(max-width:760px)');if(!grid)return;
+const specs=[['destinationsContent','יעדים מתוכננים'],['flightsContent','טיסות מתוכננות'],['hotelsContent','מלונות מתוכננים'],['carsContent','השכרות רכב']];
+const records=specs.map(([id,label])=>{let content=document.getElementById(id),node=content&&content.closest('.list-box');if(!node)return null;let mark=document.createComment('v913-original-'+id);node.before(mark);return{id,label,node,mark}}).filter(Boolean);
+if(records.length!==4)return;
+const tabs=document.createElement('div');tabs.id='v913RouteTabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','תצוגות תכנון מסלול');
+const lists=document.createElement('div');lists.id='v913RouteLists';root.prepend(tabs);root.append(lists);let active='overview',mobile=false;
+const all=[{id:'overview',label:'מסלול ומידע יומי'},...records];
+all.forEach((item,index)=>{const b=document.createElement('button');b.type='button';b.id='v913Tab-'+item.id;b.dataset.routeList=item.id;b.textContent=item.label;b.setAttribute('role','tab');b.setAttribute('aria-controls',item.id==='overview'?'v913Overview':'v913List-'+item.id);b.onclick=()=>select(item.id,true);b.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let n=e.key==='Home'?0:e.key==='End'?all.length-1:(index+(e.key==='ArrowLeft'?1:-1)+all.length)%all.length;select(all[n].id,true);document.getElementById('v913Tab-'+all[n].id).focus()};tabs.append(b)});
+function select(id,scroll){if(!all.some(x=>x.id===id))id='overview';active=id;for(const b of tabs.children){const on=b.dataset.routeList===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1}if(!mobile)return;
+grid.hidden=id!=='overview';lists.hidden=id==='overview';records.forEach(r=>{r.node.hidden=r.id!==id});if(scroll&&tabs.getBoundingClientRect().top<0)tabs.scrollIntoView({block:'start',behavior:'instant'})}
+function layout(){mobile=mq.matches;if(mobile){grid.id='v913Overview';grid.setAttribute('role','tabpanel');grid.setAttribute('aria-labelledby','v913Tab-overview');records.forEach(r=>{r.node.id='v913List-'+r.id;r.node.setAttribute('role','tabpanel');r.node.setAttribute('aria-labelledby','v913Tab-'+r.id);lists.append(r.node)});select(active,false)}else{grid.hidden=false;grid.removeAttribute('id');grid.removeAttribute('role');grid.removeAttribute('aria-labelledby');lists.hidden=false;records.forEach(r=>{r.node.hidden=false;r.node.removeAttribute('id');r.node.removeAttribute('role');r.node.removeAttribute('aria-labelledby');r.mark.after(r.node)})}}
+if(mq.addEventListener)mq.addEventListener('change',layout);else mq.addListener(layout);
+window.v913ShowRouteList=function(id){if(typeof window.v90SwitchSection==='function')window.v90SwitchSection('route',false);select(id,true)};
+layout();
+})();</script><style id="v914-compact-mobile-controls">
+@media screen and (max-width:760px){
+#mainContent>.v90-shared{padding:10px;margin-bottom:8px}
+.v90-shared .stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;margin:8px 0 0!important}
+.v90-shared .stat-card{min-width:0;padding:5px 3px!important;border-radius:7px}
+.v90-shared .stat-number{font-size:1.05rem!important;line-height:1.1}
+.v90-shared .stat-label{font-size:.72rem!important;line-height:1.2;margin-top:2px;overflow-wrap:anywhere}
+#v913RouteTabs{gap:4px;padding:5px;margin-bottom:8px;border-radius:10px;top:4px}
+#v913RouteTabs>button{min-height:34px;padding:5px 4px;font-size:.76rem;line-height:1.2;border-radius:7px}
+#v913RouteTabs>button:first-child{min-height:32px;padding-block:4px}
+#v90Panel-route .view-switcher{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;margin-top:0;margin-bottom:8px}
+#v90Panel-route .view-switcher>.view-button{width:100%;min-width:0;min-height:40px;height:auto;padding:5px 3px!important;font-size:.75rem!important;line-height:1.2;white-space:normal;overflow-wrap:normal;border-radius:7px}
+#v90Panel-route .v90-route{gap:8px}
+#v913RouteLists>.list-box{scroll-margin-top:130px}
+}
+</style><style id="v915-location-and-day-info">
+.day-info-panel[hidden]{display:none!important}
+.v915-location-raw{display:none!important}
+.v915-location-compact{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.v915-location-compact button{padding:8px 12px;border-radius:8px;background:#374151;color:white;min-height:40px}
+.v915-location-compact small{font-size:.8rem;color:#64748b;overflow-wrap:anywhere;min-width:0}
+#v915LocationModal{z-index:1100}
+#v915LocationModal .modal-content{max-width:560px;max-height:90dvh;overflow-y:auto;min-width:0;width:100%}
+#v915LocationModal .location-box{margin:0 0 12px}
+#v915LocationModal .location-actions{display:flex;flex-wrap:wrap;gap:8px}
+#v915LocationModal .location-actions button{min-height:40px}
+#v915LocationModal .v915-location-footer{display:flex;gap:8px;flex-wrap:wrap}
+#v915LocationModal .v915-location-footer button{flex:1;min-height:42px;padding:9px 12px;border-radius:8px;background:#374151;color:#fff}
+#v915LocationModal .v915-location-footer button:last-child{background:#e5e7eb;color:#111827}
+#locationSearchModal,#mapPickerModal{z-index:1200}
+</style><script id="v915-location-and-day-info-js">(function(){
+const E=id=>document.getElementById(id),panel=document.querySelector('.day-info-panel');let chosen=false;
+function syncInfo(){if(!panel)return;const content=E('dayInfoContent'),route=E('v90Panel-route'),grid=route?.querySelector('.v90-route');const show=chosen&&['calendar','alltrip'].includes(currentView)&&route&&!route.hidden&&grid&&!grid.hidden&&content&&!content.classList.contains('empty-main-info');if(panel.hidden===show)panel.hidden=!show}
+const dayClick=window.handleDayClick;window.handleDayClick=function(){chosen=true;try{return dayClick.apply(this,arguments)}finally{syncInfo()}};
+const info=window.showDayInfo;window.showDayInfo=function(){try{return info.apply(this,arguments)}finally{syncInfo()}};
+const view=window.showView;window.showView=function(v){if(v!==currentView||!['calendar','alltrip'].includes(v))chosen=false;try{return view.apply(this,arguments)}finally{syncInfo()}};
+const clear=window.clearForm;window.clearForm=function(){chosen=false;try{return clear.apply(this,arguments)}finally{syncInfo()}};
+if(panel){const watch=new MutationObserver(syncInfo);watch.observe(E('dayInfoContent'),{childList:true,subtree:true,attributes:true,attributeFilter:['class']});const route=E('v90Panel-route');if(route){watch.observe(route,{attributes:true,attributeFilter:['hidden']});const grid=route.querySelector('.v90-route');if(grid)watch.observe(grid,{attributes:true,attributeFilter:['hidden']})}}syncInfo();
+const records=new Map();let editing=null,returnFocus=null;
+const modal=document.createElement('div');modal.id='v915LocationModal';modal.className='modal';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','v915LocationTitle');
+modal.innerHTML='<div class="modal-content"><div class="modal-header"><h2 id="v915LocationTitle">הגדרת מיקום</h2><button type="button" class="close-btn" aria-label="ביטול וסגירה" onclick="v915FinishLocation(false)">&times;</button></div><p style="margin-bottom:10px;font-size:.85rem;color:#64748b">אפשר להזין קואורדינטות, לחפש מקום או לבחור נקודה במפה. לחצו אישור כדי להחיל על הטופס.</p><div id="v915LocationSlot"></div><div class="v915-location-footer"><button type="button" onclick="v915FinishLocation(true)">אישור מיקום</button><button type="button" onclick="v915FinishLocation(false)">ביטול</button></div></div>';
+document.body.append(modal);
+for(const target of ['addDestination','editDestination','subDestination']){const ids=locationFieldIds(target),lat=E(ids[0]),lng=E(ids[1]),raw=lat?.closest('.location-box');if(!raw)continue;const mark=document.createComment('v915-location-'+target);raw.before(mark);const compact=document.createElement('div');compact.className='v915-location-compact';const button=document.createElement('button');button.type='button';button.textContent='הגדר מיקום';button.onclick=()=>window.v915OpenLocation(target);const summary=document.createElement('small');summary.setAttribute('aria-live','polite');compact.append(button,summary);raw.before(compact);raw.classList.add('v915-location-raw');const transport=raw.querySelector('select[id$="Transport"]')?.closest('.form-group');if(transport)raw.before(transport);records.set(target,{raw,mark,compact,summary,lat,lng,check:raw.querySelector('input[type="checkbox"]')});}
+function summaries(){for(const r of records.values()){r.summary.textContent=r.lat.value&&r.lng.value?'מיקום: '+r.lat.value+', '+r.lng.value:'לא הוגדר מיקום'}}
+const status=window.updateLocationStatus;window.updateLocationStatus=function(){const r=status.apply(this,arguments);summaries();return r};
+window.v915OpenLocation=function(target){if(editing)return;const r=records.get(target);if(!r)return;returnFocus=document.activeElement;editing={target,r,lat:r.lat.value,lng:r.lng.value,check:r.check?.checked};r.raw.classList.remove('v915-location-raw');E('v915LocationSlot').append(r.raw);modal.style.display='flex';r.lat.focus()};
+window.v915FinishLocation=function(accept){if(!editing)return;const {r,target}=editing;if(accept&&readLocation(target)===null){alert('הקואורדינטות אינן תקינות. יש להזין קו רוחב וקו אורך תקינים, או להשאיר את שניהם ריקים.');return}if(!accept){r.lat.value=editing.lat;r.lng.value=editing.lng;if(r.check)r.check.checked=editing.check}r.raw.classList.add('v915-location-raw');r.compact.after(r.raw);modal.style.display='none';editing=null;updateLocationStatus(target);returnFocus?.focus();returnFocus=null};
+modal.addEventListener('click',e=>{if(e.target===modal)window.v915FinishLocation(false)});
+const close=window.closeModal;window.closeModal=function(id){if(id==='v915LocationModal')return window.v915FinishLocation(false);return close.apply(this,arguments)};
+document.addEventListener('keydown',e=>{if(!editing)return;const child=['locationSearchModal','mapPickerModal'].find(id=>E(id)?.style.display==='flex');if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(child)closeModal(child);else window.v915FinishLocation(false);return}if(e.key==='Tab'&&!child){const all=[...modal.querySelectorAll('button,input,select,textarea,a[href]')].filter(n=>!n.disabled&&n.getClientRects().length);const a=all[0],b=all[all.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();b.focus()}else if(!e.shiftKey&&document.activeElement===b){e.preventDefault();a.focus()}}},true);
+summaries();
 })();</script></body>
 </html>
