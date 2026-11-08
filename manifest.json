@@ -1,8 +1,8 @@
 {
-  "name": "מתכנן הטיולים של ישי ונעמה",
-  "short_name": "מתכנן טיול",
+  "name": "מתכנן הטיולים האולטימטיבי של ישי ונעמה",
+  "short_name": "מתכנן טיולים",
   "id": "./",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0f3d56",

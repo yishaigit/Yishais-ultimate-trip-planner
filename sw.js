@@ -1,5 +1,7 @@
-const C='trip-planner-v9-0';
-const CORE=['./index.html','./Trip-planner-pro-v9.0.html','./manifest.json'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('trip-planner-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const u=new URL(e.request.url),root=new URL(self.registration.scope);if(e.request.method!=='GET'||u.origin!==root.origin||!u.pathname.startsWith(root.pathname))return;if(e.request.mode==='navigate'&&["Trip-planner-pro-v7.1.html", "Trip-planner-pro-v8.2.html", "Trip-planner-pro-v8.3.html", "Trip-planner-pro-v8.3.1.html", "Trip-planner-pro-v8.3.2.html", "Trip-planner-pro-v8.3.3.html"].some(n=>u.pathname===new URL(n,root).pathname)){e.respondWith(Promise.resolve(Response.redirect(root.href,302)));return;}e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();e.waitUntil(caches.open(C).then(c=>c.put(e.request,copy)))}return r}).catch(async()=>{const m=await caches.match(e.request);if(m)return m;if(e.request.mode==='navigate')return caches.match('./Trip-planner-pro-v9.0.html');return Response.error()}))});
+const CACHE='trip-planner-app-v1';
+const CORE=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin)return;
+if(event.request.mode==='navigate'||url.pathname==='/'||url.pathname.endsWith('/index.html')){event.respondWith(fetch(event.request).then(response=>{if(response&&response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',copy))}return response}).catch(()=>caches.match('./index.html')));return}
+event.respondWith(fetch(event.request).then(response=>{if(response&&response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy))}return response}).catch(()=>caches.match(event.request)))});
