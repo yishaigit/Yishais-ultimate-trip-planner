@@ -265,7 +265,10 @@ function airportInputChanged(target){const input=$('flight'+(target==='dep'?'Dep
 async function searchAirports(target,q){try{const r=await fetch(AIRPORT_API+encodeURIComponent(q));if(!r.ok)throw new Error('airport search failed');const data=await r.json();airportResults[target]=(Array.isArray(data)?data:[]).slice(0,8);renderAirportSuggestions(target,airportResults[target])}catch(e){airportResults[target]=[];renderAirportSuggestions(target,[])}}
 function renderAirportSuggestions(target,items){const box=$('flight'+(target==='dep'?'Dep':'Arr')+'AirportSug');if(!items.length){box.classList.remove('open');box.innerHTML='';return}box.innerHTML=items.map((a,i)=>`<div class="airport-suggestion" onclick="chooseAirport('${target}',${i})"><strong>${esc(a.name||'')}</strong>${a.code?' ('+esc(a.code)+')':''}<small>${esc([a.city,a.country].filter(Boolean).join(' · '))}</small></div>`).join('');box.classList.add('open')}
 function chooseAirport(target,i){const a=airportResults[target][i];if(!a)return;airportSelected[target]={code:a.code||'',name:a.name||'',city:a.city||'',country:a.country||'',lat:a.coordinates?.lat??a.lat??null,lon:a.coordinates?.lon??a.lon??null};$('flight'+(target==='dep'?'Dep':'Arr')+'Airport').value=airportText(a);renderAirportSuggestions(target,[])}
-function airportNavButtons(a){if(!a)return'';const q=airportQuery(a),name=airportText(a);const o={id:'airport-'+(a.code||q),name:name,navLocation:q};if(a.lat!=null&&a.lon!=null)o.uberLocation={lat:a.lat,lng:a.lon,address:name};return links(o,'nav-link')}
+function airportNavButtons(a){if(!a)return'';const q=airportQuery(a),name=airportText(a);const g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);const w='https://waze.com/ul?q='+encodeURIComponent(q)+'&navigate=yes';let uber='';
+if(a.lat!=null&&a.lon!=null){const drop=JSON.stringify({latitude:Number(a.lat),longitude:Number(a.lon),addressLine1:name});uber=`<a class="airport-uber" target="_blank" rel="noopener noreferrer" href="https://m.uber.com/looking?pickup=my_location&dropoff[latitude]=${encodeURIComponent(a.lat)}&dropoff[longitude]=${encodeURIComponent(a.lon)}&dropoff[nickname]=${encodeURIComponent(name)}&drop[0]=${encodeURIComponent(drop)}">Uber</a>`;}
+else{const key='airport|'+name+'|'+q;window.v831UberTargets=window.v831UberTargets||new Map();window.v831UberTargets.set(key,{obj:{id:'airport',name:name,navLocation:q},name:name,target:q});uber=`<button type="button" class="airport-uber" data-uber-target="${esc(key)}" title="חפש שדה תעופה לפתיחה ב־Uber">Uber</button>`;}
+return `<a class="airport-map" target="_blank" rel="noopener noreferrer" href="${esc(g)}">🗺️ מפות</a><a class="airport-waze" target="_blank" rel="noopener noreferrer" href="${esc(w)}">🧭 Waze</a>${uber}`;}
 function airportLine(a,terminal,label){if(!a&&!terminal)return'';const t=a?esc(airportText(a)):'';const term=terminal?' · טרמינל '+esc(terminal):'';return `${esc(label)}: ${t}${term}`}
 function flightSchedule(f){const dep=`המראה: ${fmt(f.date)}${f.time?' '+f.time:''}`,arr=f.arrivalDate?`נחיתה: ${fmt(f.arrivalDate)}${f.arrivalTime?' '+f.arrivalTime:''}`:'';const depA=f.depAirport?` | שדה המראה: ${esc(airportText(f.depAirport))}${f.depTerminal?' · טרמינל '+esc(f.depTerminal):''}`:'';const arrA=f.arrAirport?` | שדה נחיתה: ${esc(airportText(f.arrAirport))}${f.arrTerminal?' · טרמינל '+esc(f.arrTerminal):''}`:'';return `${dep}${depA}${arr?' | '+arr+arrA:''}`}
 
@@ -1122,6 +1125,9 @@ load();
 .airport-suggestion:hover,.airport-suggestion.active{background:#eef2ff}
 .airport-suggestion small{display:block;color:#64748b;font-size:.78rem}
 .airport-nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.airport-nav a,.airport-nav button{display:inline-block;padding:6px 9px;border-radius:7px;background:#334155;color:#fff;font-size:.78rem;text-decoration:none;border:0;cursor:pointer}
+.airport-nav a.airport-waze,.airport-nav button.airport-waze{background:#0f766e}
+.airport-nav a.airport-uber,.airport-nav button.airport-uber{background:#111827}
 .today-actions{display:flex;gap:8px;margin-top:9px}
 .today-actions button{flex:1;min-height:42px;padding:8px 10px;border-radius:8px;background:#374151;color:#fff;font-size:.9rem}
 .today-actions button.alt{background:#475569}
